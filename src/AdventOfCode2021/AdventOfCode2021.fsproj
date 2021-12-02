@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="LargeInputs\SampleInputs.fs" />
-    <Compile Include="LargeInputs\PuzzleInputs.fs" />
+    <Compile Include="Inputs\SampleInputs.fs" />
+    <Compile Include="Inputs\PuzzleInputs.fs" />
     <Compile Include="Common\Common.fs" />
     <Compile Include="Days\Day1.fs" />
     <Compile Include="Days\Day2.fs" />
