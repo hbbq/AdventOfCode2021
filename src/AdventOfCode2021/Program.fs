@@ -4,23 +4,23 @@
 [<EntryPoint>]
 let main argv = 
 
+
     Console.Write "Day: "
 
     let Day = Console.ReadLine()
-        
-    let Type = System.Reflection.Assembly.GetExecutingAssembly().GetType("Day" + Day)
 
     Console.Write "Task: "
 
     let Task = Console.ReadLine()
 
-    let Methods = Type.GetMethods()
-
-    let Method = Type.GetMethod("Problem" + Task)
-
     Console.Write "Data (0=sample, 1=puzzle): "
 
     let Data = Console.ReadLine()
+
+        
+    let Type = System.Reflection.Assembly.GetExecutingAssembly().GetType("Day" + Day)
+
+    let Method = Type.GetMethod("Problem" + Task)
 
     let TypeName = 
         match Data with
