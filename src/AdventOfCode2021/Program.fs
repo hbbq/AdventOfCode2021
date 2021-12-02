@@ -1,15 +1,44 @@
-﻿[<EntryPoint>]
+﻿open System
+
+
+[<EntryPoint>]
 let main argv = 
-    
-    let p1 = Day2.Problem1
-    let p2 = Day2.Problem2
+
+    Console.Write "Day: "
+
+    let Day = Console.ReadLine()
         
-    printfn "1: %A" p1
-    printfn "2: %A" p2
+    let Type = System.Reflection.Assembly.GetExecutingAssembly().GetType("Day" + Day)
 
-    System.Diagnostics.Trace.WriteLine(p1.ToString())
-    System.Diagnostics.Trace.WriteLine(p2.ToString())
+    Console.Write "Task: "
 
-    System.Console.ReadKey() |> ignore
+    let Task = Console.ReadLine()
+
+    let Methods = Type.GetMethods()
+
+    let Method = Type.GetMethod("Problem" + Task)
+
+    Console.Write "Data (0=sample, 1=puzzle): "
+
+    let Data = Console.ReadLine()
+
+    let TypeName = 
+        match Data with
+        | "1" -> "PuzzleInputs"
+        | _ -> "SampleInputs"
+
+    let DataType = System.Reflection.Assembly.GetExecutingAssembly().GetType(TypeName)
+
+    let DataMethod = DataType.GetMethod("get_Day" + Day)
+
+    let Input = DataMethod.Invoke(null, null)
+
+    let Result = Method.Invoke(null, [|Input|])
+
+    Console.WriteLine()
+
+    printfn "Result: %A" Result
+
+    Console.ReadKey() |> ignore
 
     0

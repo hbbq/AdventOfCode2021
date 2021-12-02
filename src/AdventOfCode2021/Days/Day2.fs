@@ -1,13 +1,10 @@
 module Day2
 
 
-
-let Problem1 =
-    
-    let Input = PuzzleInputs.Day2
+let Problem1 input =
     
     let Commands =
-        Input |> Common.Lines |> Array.map Common.Words
+        input |> Common.Lines |> Array.map Common.Words
         
     let Forward =
         Commands |> Array.where (fun e -> e[0] = "forward") |> Array.map (fun e -> e[1]) |> Array.map int |> Array.sum
@@ -23,12 +20,10 @@ let Problem1 =
     Total
 
 
-let Problem2 =
-
-    let Input = PuzzleInputs.Day2
+let Problem2 input =
     
     let Commands =
-        Input |> Common.Lines |> Array.map Common.Words
+        input |> Common.Lines |> Array.map Common.Words
 
     let AimChange (c : string[]) =
         match c[0] with
