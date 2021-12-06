@@ -27,10 +27,10 @@ let Problem2 (input : string) =
 
     let nums = 
         [|0..8|]
-        |> Array.map (fun e -> fish |> Array.where (fun f -> f = e) |> Array.length)
+        |> Array.map (fun e -> fish |> Array.where (fun f -> f = e) |> Array.length) 
         |> Array.map int64
 
-    let nextDay (f : int64[]) = 
+    let nextDay f = 
         f
         |> Array.mapi (fun i e ->
             match i with
@@ -40,11 +40,9 @@ let Problem2 (input : string) =
         )
 
     let rec simulate f d =
-        if d = 0 then
-            f
-        else
-            let n = nextDay f
-            simulate n (d - 1)
+        match d with
+        | 0 -> f
+        | _ -> simulate (nextDay f) (d - 1)
 
     let total = simulate nums 256 |> Array.sum
 
