@@ -21,6 +21,7 @@ let Problem1 (input : string) =
 
     total
 
+
 let Problem2 (input : string) = 
     
     let fish = input.Split([|','|]) |> Array.map int
@@ -39,4 +40,4 @@ let Problem2 (input : string) =
             | _ -> f[i + 1]
         )
 
-    List.fold nextDay nums [1..256] |> List.sum
+    [1..256] |> List.fold nextDay nums |> List.sum
