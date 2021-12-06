@@ -26,24 +26,17 @@ let Problem2 (input : string) =
     let fish = input.Split([|','|]) |> Array.map int
 
     let nums = 
-        [|0..8|]
-        |> Array.map (fun e -> fish |> Array.where (fun f -> f = e) |> Array.length) 
-        |> Array.map int64
+        [0..8]
+        |> List.map (fun e -> fish |> Array.where (fun f -> f = e) |> Array.length) 
+        |> List.map int64
 
-    let nextDay f = 
+    let nextDay f _ = 
         f
-        |> Array.mapi (fun i e ->
+        |> List.mapi (fun i e ->
             match i with
             | 8 -> f[0]
             | 6 -> f[7] + f[0]
             | _ -> f[i + 1]
         )
 
-    let rec simulate f d =
-        match d with
-        | 0 -> f
-        | _ -> simulate (nextDay f) (d - 1)
-
-    let total = simulate nums 256 |> Array.sum
-
-    total
+    List.fold nextDay nums [1..256] |> List.sum
