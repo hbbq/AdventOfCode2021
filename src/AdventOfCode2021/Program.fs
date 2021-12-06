@@ -57,10 +57,7 @@ let main argv =
             Console.Write "Data (0=sample, 1=puzzle): "
             Console.ReadLine()
 
-    let dataMethod = 
-        match data with
-        | "1" -> puzzleInputType
-        | _ -> sampleInputType
+    let dataMethod = if data = "1" then puzzleInputType else sampleInputType
 
     match dataMethod with
     | None -> 
