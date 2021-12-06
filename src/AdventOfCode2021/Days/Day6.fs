@@ -3,7 +3,7 @@
 
 let Problem1 (input : string) = 
     
-    let fish = input.Split([|','|]) |> Array.map int
+    let fish = input.Split(',') |> Array.map int
 
     let nextDay f = 
         let newFish = f |> Array.where (fun e -> e = 0) |> Array.map (fun e -> 8)
@@ -24,20 +24,14 @@ let Problem1 (input : string) =
 
 let Problem2 (input : string) = 
     
-    let fish = input.Split([|','|]) |> Array.map int
+    let fish = input.Split(',') |> Array.map int
 
     let nums = 
         [0..8]
         |> List.map (fun e -> fish |> Array.where (fun f -> f = e) |> Array.length) 
         |> List.map int64
 
-    let nextDay f _ = 
-        f
-        |> List.mapi (fun i e ->
-            match i with
-            | 8 -> f[0]
-            | 6 -> f[7] + f[0]
-            | _ -> f[i + 1]
-        )
+    let nextDay (f: int64 list) _ = 
+        f.Tail @ [f.Head] |> List.updateAt 6 (f[7] + f[0])
 
     [1..256] |> List.fold nextDay nums |> List.sum
