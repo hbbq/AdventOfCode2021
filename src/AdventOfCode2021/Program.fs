@@ -5,39 +5,72 @@
 let main argv = 
 
 
-    Console.Write "Day: "
+    let types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
 
-    let Day = Console.ReadLine()
+    let maxDay = 
+        types 
+        |> Array.filter (fun e -> e.Name.StartsWith("Day")) 
+        |> Array.map (fun e -> int (e.Name.Replace("Day", ""))) 
+        |> Array.max
 
-    Console.Write "Task: "
+    Console.Write $"Day ({maxDay}): "
 
-    let Task = Console.ReadLine()
+    let inpDay = Console.ReadLine()
 
-    Console.Write "Data (0=sample, 1=puzzle): "
+    let day = match inpDay with | "" -> maxDay |> string | _ -> inpDay
 
-    let Data = Console.ReadLine()
+    let dayType = types |> Array.filter (fun e -> e.Name = "Day" + day) |> Array.exactlyOne
 
-        
-    let Type = System.Reflection.Assembly.GetExecutingAssembly().GetType("Day" + Day)
 
-    let Method = Type.GetMethod("Problem" + Task)
+    let dayMethods = dayType.GetMethods()
 
-    let TypeName = 
-        match Data with
-        | "1" -> "PuzzleInputs"
-        | _ -> "SampleInputs"
+    let maxTask =
+        dayMethods
+        |> Array.filter (fun e -> e.Name.StartsWith("Problem"))
+        |> Array.map (fun e -> int (e.Name.Replace("Problem", "")))
+        |> Array.max
 
-    let DataType = System.Reflection.Assembly.GetExecutingAssembly().GetType(TypeName)
+    let task =
 
-    let DataMethod = DataType.GetMethod("get_Day" + Day)
+        if maxTask = 1 then
+            Console.WriteLine $"Only task 1 present, choosing it..."
+            "1"
+        else
+            Console.Write $"Task ({maxTask}): " 
+            let inpTask = Console.ReadLine()
+            match inpTask with | "" -> maxTask |> string | _ -> inpTask
 
-    let Input = DataMethod.Invoke(null, null)
 
-    let Result = Method.Invoke(null, [|Input|])
+    let taskMethod = dayMethods |> Array.filter (fun e -> e.Name = "Problem" + task) |> Array.exactlyOne
 
-    Console.WriteLine()
 
-    printfn "Result: %A" Result
+    let sampleInputType = System.Reflection.Assembly.GetExecutingAssembly().GetType("SampleInputs").GetMethods() |> Array.tryFind (fun e -> e.Name = "get_Day" + day)
+
+    let puzzleInputType = System.Reflection.Assembly.GetExecutingAssembly().GetType("PuzzleInputs").GetMethods() |> Array.tryFind (fun e -> e.Name = "get_Day" + day)
+
+    let data =
+        match puzzleInputType with
+        | None ->             
+            Console.WriteLine $"Only sample data present, choosing it..."
+            "0"
+        | _ ->
+            Console.Write "Data (0=sample, 1=puzzle): "
+            Console.ReadLine()
+
+    let dataMethod = 
+        match data with
+        | "1" -> puzzleInputType
+        | _ -> sampleInputType
+
+    match dataMethod with
+    | None -> 
+        Console.WriteLine()
+        Console.WriteLine "No data found"
+    | Some x ->
+        let Input = x.Invoke(null, null)
+        let Result = taskMethod.Invoke(null, [|Input|])        
+        Console.WriteLine()
+        printfn "Result: %A" Result
 
     Console.ReadKey() |> ignore
 
