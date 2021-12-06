@@ -31,7 +31,7 @@ let Problem2 (input : string) =
         |> Array.map int64
 
     let nextDay (f : int64[]) = 
-        [| f[1]; f[2]; f[3]; f[4]; f[5]; f[6]; f[7] + f[0] ; f[8]; f[0] |]
+        [| f[1]; f[2]; f[3]; f[4]; f[5]; f[6]; f[7] + f[0]; f[8]; f[0] |]
 
     let rec simulate f d =
         if d = 0 then
