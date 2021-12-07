@@ -17,7 +17,7 @@ let Problem2 (input : string) =
         
     let crabs = input.Split(',') |> Array.map int
 
-    let costs = [1 .. crabs |> Array.max] |> List.scan (fun e f -> e + f) 0
+    let costs = [1 .. crabs |> Array.max] |> List.scan (+) 0
     
     let checks = [crabs |> Array.min .. crabs |> Array.max]
     
