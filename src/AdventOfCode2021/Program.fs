@@ -64,10 +64,12 @@ let main argv =
         Console.WriteLine()
         Console.WriteLine "No data found"
     | Some x ->
+        let watch = System.Diagnostics.Stopwatch.StartNew()
         let Input = x.Invoke(null, null)
-        let Result = taskMethod.Invoke(null, [|Input|])        
+        let Result = taskMethod.Invoke(null, [|Input|]) 
         Console.WriteLine()
         printfn "Result: %A" Result
+        printfn "Time:  %A" watch.Elapsed
 
     Console.ReadKey() |> ignore
 
