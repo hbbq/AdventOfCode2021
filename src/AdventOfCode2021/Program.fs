@@ -67,9 +67,10 @@ let main argv =
         let watch = System.Diagnostics.Stopwatch.StartNew()
         let Input = x.Invoke(null, null)
         let Result = taskMethod.Invoke(null, [|Input|]) 
+        let Elapsed = watch.Elapsed
         Console.WriteLine()
         printfn "Result: %A" Result
-        printfn "Time:  %A" watch.Elapsed
+        printfn "Time:  %A" Elapsed
 
     Console.ReadKey() |> ignore
 
