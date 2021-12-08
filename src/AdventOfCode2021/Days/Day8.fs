@@ -94,7 +94,7 @@ let Problem2 (input : string) =
 
         let s = digits
         
-        s |> Seq.find (fun e -> not(e |> Array.contains -1)) |> Array.map string |> (fun e -> System.String.Join(' ', e).Replace(" ", "") |> int)
+        s |> Seq.find (fun e -> not(e |> Array.contains -1)) |> Array.rev |> Array.mapi (fun i e -> e * int (10.0 ** i)) |> Array.sum
 
     lines |> Array.map calculateLine |> Array.sum
                                                 
