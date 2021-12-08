@@ -92,9 +92,9 @@ let Problem2 (input : string) =
             }
             
 
-        let s = digits |> Seq.toArray
+        let s = digits
         
-        s |> Array.where (fun e -> not(e |> Array.contains -1)) |> Array.head |> Array.map string |> (fun e -> System.String.Join(' ', e).Replace(" ", "") |> int)
+        s |> Seq.find (fun e -> not(e |> Array.contains -1)) |> Array.map string |> (fun e -> System.String.Join(' ', e).Replace(" ", "") |> int)
 
     lines |> Array.map calculateLine |> Array.sum
                                                 
