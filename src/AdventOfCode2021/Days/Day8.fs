@@ -68,44 +68,27 @@ let Problem2 (input : string) =
         let digits = 
             seq {              
                 for comb in validCombinations do
-                    let a = comb[0]
-                    let b = comb[1]
-                    let c = comb[2]
-                    let d = comb[3]
-                    let e = comb[4]
-                    let f = comb[5]
-                    let g = comb[6]
-                    if ([|a; b; c; d; e; f; g|] |> Array.distinct |> Array.length = 7) then
-                        let output = line.Split('|')[1] |> Common.Words
-                        let fix (digit : string) =
-                            let translated = 
-                                digit.ToCharArray() |> Array.map (fun x ->
-                                    if   x = a then 'a'
-                                    elif x = b then 'b'
-                                    elif x = c then 'c'
-                                    elif x = d then 'd'
-                                    elif x = e then 'e'
-                                    elif x = f then 'f'
-                                    elif x = g then 'g'
-                                    else ' '
-                                )
-                            let sorted =
-                                translated |> Array.sort |> (fun e -> System.String.Join(' ', e).Replace(" ", ""))
-                            let toNum =
-                                match sorted with
-                                | "abcefg" -> 0
-                                | "cf" -> 1
-                                | "acdeg" -> 2
-                                | "acdfg" -> 3
-                                | "bcdf" -> 4
-                                | "abdfg" -> 5
-                                | "abdefg" -> 6
-                                | "acf" -> 7
-                                | "abcdefg" -> 8
-                                | "abcdfg" -> 9
-                                | _ -> -1
-                            toNum
-                        output |> Array.map fix
+                    let output = line.Split('|')[1] |> Common.Words
+                    let fix (digit : string) =
+                        let translated = 
+                            digit.ToCharArray() |> Array.map (fun x -> chars[comb |> Array.findIndex ((=) x)])
+                        let sorted =
+                            translated |> Array.sort |> (fun e -> System.String.Join(' ', e).Replace(" ", ""))
+                        let toNum =
+                            match sorted with
+                            | "abcefg" -> 0
+                            | "cf" -> 1
+                            | "acdeg" -> 2
+                            | "acdfg" -> 3
+                            | "bcdf" -> 4
+                            | "abdfg" -> 5
+                            | "abdefg" -> 6
+                            | "acf" -> 7
+                            | "abcdefg" -> 8
+                            | "abcdfg" -> 9
+                            | _ -> -1
+                        toNum
+                    output |> Array.map fix
             }
             
 
