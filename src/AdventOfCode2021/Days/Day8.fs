@@ -76,17 +76,17 @@ let Problem2 (input : string) =
                             translated |> Array.sort |> (fun e -> System.String.Join(' ', e).Replace(" ", ""))
                         let toNum =
                             match sorted with
-                            | "abcefg" -> 0
-                            | "cf" -> 1
-                            | "acdeg" -> 2
-                            | "acdfg" -> 3
-                            | "bcdf" -> 4
-                            | "abdfg" -> 5
-                            | "abdefg" -> 6
-                            | "acf" -> 7
+                            | "abcefg"  -> 0
+                            | "cf"      -> 1
+                            | "acdeg"   -> 2
+                            | "acdfg"   -> 3
+                            | "bcdf"    -> 4
+                            | "abdfg"   -> 5
+                            | "abdefg"  -> 6
+                            | "acf"     -> 7
                             | "abcdefg" -> 8
-                            | "abcdfg" -> 9
-                            | _ -> -1
+                            | "abcdfg"  -> 9
+                            | _         -> -1
                         toNum
                     output |> Array.map fix
             }
