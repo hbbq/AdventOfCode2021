@@ -29,6 +29,7 @@ let Problem2 (input : string) =
         let digitToGroups (digit : string) =
             digit.ToCharArray() |> Array.map (fun e -> (digit.Length, e))
         let collect = allDigits |> Array.collect digitToGroups
+
         let InValids = [|
             collect |> Array.where (fun (c, d) -> match c with | 2 -> true | 4 -> true | _ -> false) |> Array.map snd |> Array.distinct ;
             collect |> Array.where (fun (c, d) -> match c with | 2 -> true | 3 -> true | _ -> false) |> Array.map snd |> Array.distinct ;
@@ -38,15 +39,12 @@ let Problem2 (input : string) =
             [||] ;
             collect |> Array.where (fun (c, d) -> match c with | 2 -> true | 3 -> true | 4 -> true | _ -> false) |> Array.map snd |> Array.distinct ;
         |]
-        let valids = [|
-            chars |> Array.where (fun e -> not (InValids[0] |> Array.contains e)) ;
-            chars |> Array.where (fun e -> not (InValids[1] |> Array.contains e)) ;
-            chars |> Array.where (fun e -> not (InValids[2] |> Array.contains e)) ;
-            chars |> Array.where (fun e -> not (InValids[3] |> Array.contains e)) ;
-            chars |> Array.where (fun e -> not (InValids[4] |> Array.contains e)) ;
-            chars |> Array.where (fun e -> not (InValids[5] |> Array.contains e)) ;
-            chars |> Array.where (fun e -> not (InValids[6] |> Array.contains e)) ;
-        |]
+
+        let valids =
+            InValids |> Array.map (fun i ->
+                (chars |> Array.where (fun c -> not (i |> Array.contains(c))))
+            )
+       
         let combinations = 
             valids[0] |> Array.collect (fun a ->
                 valids[1] |> Array.collect ( fun b ->
@@ -63,8 +61,10 @@ let Problem2 (input : string) =
                     )
                 )
             )
+
         let validCombinations = 
             combinations |> Array.where (fun e -> e |> Array.distinct |> Array.length = 7)
+
         let digits = 
             seq {              
                 for comb in validCombinations do
