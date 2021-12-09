@@ -39,14 +39,17 @@ let Problem2 (input : string) =
 
     let getBasin x y =
         let rec points px py =
-            let these =
-                [|(px,py);(px-1,py);(px+1,py);(px,py-1);(px,py+1)|]
-                |> Array.where (fun (ax,ay) -> ax >= 0 && ax < w && ay >= 0 && ay < h && map[ax][ay] < 9 && (ckd[ax][ay] = false || (ax=px && ay=py)))
-            for (px, py) in these do
+            if ckd[px][py] then
+                []
+            else
                 ckd[px][py] <- true
-            these |> Array.collect (fun (ax, ay) -> if ax = px && ay = py then [|(ax, ay)|] else points ax ay)
+                let these =
+                    [(px-1,py);(px+1,py);(px,py-1);(px,py+1)]
+                    |> List.where (fun (ax,ay) -> ax >= 0 && ax < w && ay >= 0 && ay < h && map[ax][ay] < 9 && ckd[ax][ay] = false)
+                    |> List.collect (fun (ax, ay) -> points ax ay)
+                (px,py) :: these
         let p = points x y
-        p |> Array.length
+        p |> List.length
 
     let basins =
         [
