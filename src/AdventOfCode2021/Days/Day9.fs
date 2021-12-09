@@ -5,11 +5,12 @@ let Problem1 (input : string) =
 
     let map = input |> Common.Lines |> Array.map (fun e -> e |> Common.Digits |> Seq.toArray)
 
-    let h = map[0].Length
     let w = map |> Array.length
+    let h = map[0].Length
 
     let isLow x y =
         let points =
+
             if x > 0 then [map[x-1][y]] else []
             @
             if x < w - 1 then [map[x+1][y]] else []
@@ -30,33 +31,30 @@ let Problem1 (input : string) =
 
 let Problem2 (input : string) =
 
-    let map = input |> Common.Lines |> Array.map (fun e -> e |> Common.Digits |> Seq.toArray)
+    let map = input |> Common.Lines |> Array.map (fun e -> e.ToCharArray() |> Array.map (fun e -> e = '9'))
 
-    let h = map[0].Length
     let w = map |> Array.length
-
-    let mutable ckd = [|0..w-1|] |> Array.map (fun e -> [|0..h-1|] |> Array.map (fun f -> map[e][f] = 9))
+    let h = map[0].Length
 
     let getBasin x y =
         let rec points px py =
-            if ckd[px][py] then
-                []
-            else
-                ckd[px][py] <- true
+            match map[px][py] with
+            | true -> []
+            | _ ->
+                map[px][py] <- true
                 let these =
                     [(px-1,py);(px+1,py);(px,py-1);(px,py+1)]
-                    |> List.where (fun (ax,ay) -> ax >= 0 && ax < w && ay >= 0 && ay < h && map[ax][ay] < 9 && ckd[ax][ay] = false)
+                    |> List.where (fun (ax,ay) -> ax >= 0 && ax < w && ay >= 0 && ay < h && map[ax][ay] = false)
                     |> List.collect (fun (ax, ay) -> points ax ay)
                 (px,py) :: these
-        let p = points x y
-        p |> List.length
+        points x y |> List.length
 
     let basins =
         [
             for x in [|0..w-1|] do
                 for y in [|0..h-1|] do
-                    if not(ckd[x][y]) then
+                    if not(map[x][y]) then
                         getBasin x y                    
         ]
 
-    basins |> List.sortDescending |> List.take 3 |> List.scan (*) 1 |> List.last
+    basins |> List.sortDescending |> List.take 3 |> List.reduce (*)
