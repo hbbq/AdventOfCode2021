@@ -9,15 +9,13 @@ let Problem1 (input : string) =
     let h = map[0].Length
 
     let isLow x y =
-        let points =
-            if x > 0 then [map[x-1][y]] else []
-            @
-            if x < w - 1 then [map[x+1][y]] else []
-            @
-            if y > 0 then [map[x][y-1]] else []
-            @
-            if y < h - 1 then [map[x][y+1]] else []
-            |> List.toArray
+        let points = 
+            [|
+                if x > 0 then map[x-1][y]
+                if x < w - 1 then map[x+1][y]
+                if y > 0 then map[x][y-1]
+                if y < h - 1 then map[x][y+1]
+            |]
         let v = map[x][y]
         points |> Array.where (fun e -> v >= e) |> Array.length = 0
 
