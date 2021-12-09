@@ -10,7 +10,6 @@ let Problem1 (input : string) =
 
     let isLow x y =
         let points =
-
             if x > 0 then [map[x-1][y]] else []
             @
             if x < w - 1 then [map[x+1][y]] else []
@@ -37,24 +36,26 @@ let Problem2 (input : string) =
     let h = map[0].Length
 
     let getBasin x y =
+
         let rec points px py =
-            match map[px][py] with
-            | true -> []
-            | _ ->
+            if map[px][py] then
+                []
+            else
                 map[px][py] <- true
                 let these =
-                    [(px-1,py);(px+1,py);(px,py-1);(px,py+1)]
-                    |> List.where (fun (ax,ay) -> ax >= 0 && ax < w && ay >= 0 && ay < h && map[ax][ay] = false)
+                    [(px-1, py);(px+1, py);(px, py-1);(px, py+1)]
+                    |> List.where (fun (ax, ay) -> ax >= 0 && ax < w && ay >= 0 && ay < h && map[ax][ay] = false)
                     |> List.collect (fun (ax, ay) -> points ax ay)
-                (px,py) :: these
+                (px, py) :: these
+
         points x y |> List.length
 
     let basins =
-        [
+        [|
             for x in [|0..w-1|] do
                 for y in [|0..h-1|] do
                     if not(map[x][y]) then
                         getBasin x y                    
-        ]
+        |]
 
-    basins |> List.sortDescending |> List.take 3 |> List.reduce (*)
+    basins |> Array.sortDescending |> Array.take 3 |> Array.reduce (*)
