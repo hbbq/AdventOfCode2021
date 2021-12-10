@@ -73,7 +73,7 @@ let Problem2 (input : string) =
                         let translated = 
                             digit.ToCharArray() |> Array.map (fun x -> chars[comb |> Array.findIndex ((=) x)])
                         let sorted =
-                            translated |> Array.sort |> (fun e -> System.String.Join(' ', e).Replace(" ", ""))
+                            translated |> Array.sort |> Array.map string |> Array.reduce (+)
                         let toNum =
                             match sorted with
                             | "abcefg"  -> 0
