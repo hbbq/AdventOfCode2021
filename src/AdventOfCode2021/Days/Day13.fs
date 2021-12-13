@@ -14,16 +14,8 @@ let Problem1 (input : string) =
         )
 
     let fold (d : (int * int)[]) h p =
-        let xc x = 
-            if h then
-                x 
-            else
-                if x < p then x else 2 * p - x
-        let yc y = 
-            if not(h) then
-                y
-            else
-                if y < p then y else 2 * p - y
+        let xc x = if h then x else min x (2 * p - x)
+        let yc y = if h then min y (2 * p - y) else y
         d
         |> Array.map (fun (x, y) -> (xc x, yc y))
         |> Array.distinct
@@ -53,16 +45,8 @@ let Problem2 (input : string) =
         )
 
     let fold (d : (int * int)[]) h p =
-        let xc x = 
-            if h then
-                x 
-            else
-                if x < p then x else 2 * p - x
-        let yc y = 
-            if not(h) then
-                y
-            else
-                if y < p then y else 2 * p - y
+        let xc x = if h then x else min x (2 * p - x)
+        let yc y = if h then min y (2 * p - y) else y
         d
         |> Array.map (fun (x, y) -> (xc x, yc y))
         |> Array.distinct
