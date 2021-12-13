@@ -5523,3 +5523,27 @@ let Day11 = "3113284886
 3857446528
 7322422833
 8152175168"
+
+let Day12 = "QF-bw
+end-ne
+po-ju
+QF-lo
+po-start
+XL-ne
+bw-US
+ne-lo
+nu-ne
+bw-po
+QF-ne
+ne-ju
+start-lo
+lo-XL
+QF-ju
+end-ju
+XL-end
+bw-ju
+nu-start
+lo-nu
+nu-XL
+xb-XL
+XL-po"
