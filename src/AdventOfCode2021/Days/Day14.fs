@@ -49,9 +49,7 @@ let Problem2 (input : string) =
     
     let allPairs =
         let chars = (template @ (pairs |> Array.map snd |> Array.toList)) |> List.distinct
-        chars |> List.collect (fun e ->
-            chars |> List.map (fun f -> (e, f))
-        )
+        List.allPairs chars chars
 
     let counts = 
         (' ', template[0], 1L) :: (
@@ -66,7 +64,7 @@ let Problem2 (input : string) =
                 | None -> [(a, b, l)]
                 | Some (_, n) -> [(a, n, l); (n, b, l)]
             )
-        let nc = l |> List.map (fun (a, b, _) -> (a, b, collect |> List.where (fun (c, d, e) -> c = a && d = b) |> List.sumBy (fun (_, _, l) -> l)))
+        let nc = l |> List.map (fun (a, b, _) -> (a, b, collect |> List.where (fun (c, d, _) -> c = a && d = b) |> List.sumBy (fun (_, _, l) -> l)))
         nc
 
     let lop = [1..40] |> List.fold insert counts
