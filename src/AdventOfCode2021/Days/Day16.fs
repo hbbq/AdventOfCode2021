@@ -4,7 +4,7 @@
 let Problem1 (input : string) =
 
     let hexToBits (hex : char) =
-        match e with
+        match hex with
         | '0' -> "0000"
         | '1' -> "0001"
         | '2' -> "0010"
@@ -30,13 +30,13 @@ let Problem1 (input : string) =
 
 
     let bitsToNum (bits : int[]) =
-        bits |> Array.rev |> Array.mapi (fun i e -> e * (2 ** i)) |> Array.reduce (+)
+        bits |> Array.rev |> Array.mapi (fun i e -> e * int (2.0 ** float i)) |> Array.reduce (+)
 
     let rec collect (b : int[]) = 
 
-        let version = b |> Array.take 3
+        let version = b |> Array.take 3 |> bitsToNum
 
-        let tpe = b |> Array.skip 3 |> Array.take 3
+        let tpe = b |> Array.skip 3 |> Array.take 3 |> bitsToNum
 
         if tpe = 4 then
 
