@@ -3,7 +3,7 @@
 
 let Problem1 (input : string) =
 
-    Seq.sum {1 .. -1 - (input.Split('=','.')[4] |> int)}
+    Seq.sum {1 .. -1-(input.Split('=','.')[4] |> int)}
     
 
 let Problem2 (input : string) =
