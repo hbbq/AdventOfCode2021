@@ -35,9 +35,7 @@ let Problem1 (input : string) =
         |> List.reduce (+)
 
     let reduceOrSplit (a : thing list) =
-
-        //System.Diagnostics.Debug.WriteLine (a |> listToStr)
-        
+            
         let mutable Depth = 0
         let mutable arr = a |> List.toArray
         let mutable hit = false
@@ -93,7 +91,6 @@ let Problem1 (input : string) =
                                 arr[i+1] <- PIgnore
                                 arr[i+2] <- PIgnore
                                 arr[i+3] <- PIgnore
-                                //arr[i+4] <- PIgnore
                     | _ -> 0 |> ignore
 
         let l = arr |> Array.where (fun e -> match e with | PIgnore -> false | _ -> true) |> Array.toList
@@ -188,8 +185,6 @@ let Problem2 (input : string) =
         |> List.reduce (+)
 
     let reduceOrSplit (a : thing list) =
-
-        //System.Diagnostics.Debug.WriteLine (a |> listToStr)
         
         let mutable Depth = 0
         let mutable arr = a |> List.toArray
@@ -246,7 +241,6 @@ let Problem2 (input : string) =
                                 arr[i+1] <- PIgnore
                                 arr[i+2] <- PIgnore
                                 arr[i+3] <- PIgnore
-                                //arr[i+4] <- PIgnore
                     | _ -> 0 |> ignore
 
         let l = arr |> Array.where (fun e -> match e with | PIgnore -> false | _ -> true) |> Array.toList
