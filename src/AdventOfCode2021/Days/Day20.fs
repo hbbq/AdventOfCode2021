@@ -35,14 +35,6 @@ let Problem1 (input : string) =
         bits[8]
 
     let enhance (m : (int*int)[]) =
-        (*
-        System.Console.WriteLine ""
-        for y in [minx..maxx] do
-            for x in [miny..maxy] do
-                let ch = if (m |> Array.where (fun (a, b) -> a = x && b = y) |> Array.length > 0) then '#' else '.'
-                System.Console.Write ch
-            System.Console.WriteLine ""
-        *)
         [|
             for x in [minx..maxx] do
                 for y in [miny..maxy] do
@@ -121,21 +113,13 @@ let Problem2 (input : string) =
         bits[7] * 2 +
         bits[8]
     
-    let enhance (m : int[][]) =
-        (*
-        System.Console.WriteLine ""
-        for y in [minx..maxx] do
-            for x in [miny..maxy] do
-                let ch = if (m |> Array.where (fun (a, b) -> a = x && b = y) |> Array.length > 0) then '#' else '.'
-                System.Console.Write ch
-            System.Console.WriteLine ""
-        *)
+    let enhance (m : int[][]) =        
         [|
             for x in [0..rmaxx] do
                 [|
                     for y in [0..rmaxy] do
                         if x = 0 || y = 0 || x = rmaxx || y =rmaxy then
-                            1-m[x][y]
+                            map[if m[x][y] = 0 then 0 else 511]
                         else
                             let num =
                                 [| 
