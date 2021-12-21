@@ -1,5 +1,6 @@
 ﻿module Day21
 
+
     let Problem1 (input : string) =
 
         let starts = input |> Common.Lines |> Array.map (fun e -> e.Split(": ")[1] |> int)
@@ -48,19 +49,14 @@
 
         let winat = 21
 
-        let t1 (a,_,_) = a
-        let t2 (_,a,_) = a
-        let t3 (_,_,a) = a
+        let rolls = [|(3,1L);(4,3L);(5,6L);(6,7L);(7,6L);(8,3L);(9,1L)|]
 
-        let rec split (p : (int*int)[]) player cnt =
-            let (pos,score) = p[player]
-            let rolls = [|(3,1L);(4,3L);(5,6L);(6,7L);(7,6L);(8,3L);(9,1L)|]
+        let rec split tp ts op os cnt =
             let scores =
                rolls 
                |> Array.map (fun (r,c) -> 
-                    let np = ((pos+r-1) % 10) + 1
-                    let ns = score + np
-                    (np,ns,c*cnt)
+                    let np = ((tp+r-1) % 10) + 1
+                    (np,ts+np,c*cnt)
                 )
             let wins =
                 scores
@@ -77,17 +73,12 @@
                 let inn =
                     collect
                     |> Array.map (fun (a,b,c) -> 
-                        let pairs =
-                            if player = 0 then
-                                [|(a,b);p[1]|]
-                            else
-                                [|p[0];(a,b)|]
-                        split pairs (1-player) c
+                        split op os a b c
                     )
                 (inn |> Array.sumBy fst, inn |> Array.sumBy snd)
-            (((fst recurse) + if player = 0 then wins else 0),((snd recurse) + if player = 1 then wins else 0))
+            (snd recurse + wins, fst recurse)
 
-        let r = split [|(starts[0],0);(starts[1],0)|] 0 1
+        let r = split starts[0] 0 starts[1] 0 1
         
         max (fst r) (snd r)
                 
