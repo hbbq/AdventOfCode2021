@@ -4,17 +4,10 @@
     let Problem1 (input : string) =
 
         let starts = input |> Common.Lines |> Array.map (fun e -> e.Split(": ")[1] |> int)
+          
+        let dice = Seq.initInfinite (fun e -> (e % 100) + 1)
 
-        let dice = 
-            let rec s n = seq {
-                let nn = (n % 100) + 1
-                yield nn
-                yield! s nn
-            }
-            s 0
-
-        let rolls = 
-            dice |> Seq.chunkBySize 3 |> Seq.map Array.sum
+        let rolls = dice |> Seq.chunkBySize 3 |> Seq.map Array.sum
 
         let points =
             rolls 
@@ -52,31 +45,35 @@
         let rolls = [|(3,1L);(4,3L);(5,6L);(6,7L);(7,6L);(8,3L);(9,1L)|]
 
         let rec split tp ts op os cnt =
-            let scores =
-               rolls 
-               |> Array.map (fun (r,c) -> 
-                    let np = ((tp+r-1) % 10) + 1
-                    (np,ts+np,c*cnt)
-                )
-            let wins =
-                scores
-                |> Array.where (fun (_,s,_) -> s >= winat)
-                |> Array.sumBy (fun (_,_,c) -> c)
-            let collect =
-                scores 
-                |> Array.where (fun (_,s,_) -> s < winat)
-                |> Array.groupBy (fun (a,b,_) -> (a,b)) 
-                |> Array.map (fun ((a,b),c) -> 
-                    (a,b,c |> Array.sumBy (fun (_,_,c) -> c))
-                )
-            let recurse =
-                let inn =
-                    collect
-                    |> Array.map (fun (a,b,c) -> 
-                        split op os a b c
+
+            if ts = winat - 1 then
+                (27L*cnt,0L)
+            else
+                let scores =
+                   rolls 
+                   |> Array.map (fun (r,c) -> 
+                        let np = ((tp+r-1) % 10) + 1
+                        (np,ts+np,c*cnt)
                     )
-                (inn |> Array.sumBy fst, inn |> Array.sumBy snd)
-            (snd recurse + wins, fst recurse)
+                let wins =
+                    scores
+                    |> Array.where (fun (_,s,_) -> s >= winat)
+                    |> Array.sumBy (fun (_,_,c) -> c)
+                let collect =
+                    scores 
+                    |> Array.where (fun (_,s,_) -> s < winat)
+                    |> Array.groupBy (fun (a,b,_) -> (a,b)) 
+                    |> Array.map (fun ((a,b),c) -> 
+                        (a,b,c |> Array.sumBy (fun (_,_,c) -> c))
+                    )
+                let recurse =
+                    let inn =
+                        collect
+                        |> Array.map (fun (a,b,c) -> 
+                            split op os a b c
+                        )
+                    (inn |> Array.sumBy fst, inn |> Array.sumBy snd)
+                (snd recurse + wins, fst recurse)
 
         let r = split starts[0] 0 starts[1] 0 1
         
