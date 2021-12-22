@@ -83,40 +83,32 @@ let Problem2 (input : string) =
             |> Array.distinct
             |> Array.map (fun (a,b) -> (a,b,int64 (1+b-a)))
                                 
-        let xps = steps |> Array.collect (fun (_,a,b,_,_,_,_) -> [|a;b|]) |> getAll
-        let yps = steps |> Array.collect (fun (_,_,_,a,b,_,_) -> [|a;b|]) |> getAll
-        let zps = steps |> Array.collect (fun (_,_,_,_,_,a,b) -> [|a;b|]) |> getAll
-
         let cs = steps |> Array.rev
                 
         let collect = 
             [|
+        
+                let xps = steps |> Array.collect (fun (_,a,b,_,_,_,_) -> [|a;b|]) |> getAll
 
                 for (xs,xe,xc) in xps do
 
                     let xsteps = cs |> Array.where (fun (_,sxs,sxe,_,_,_,_) -> sxs <= xe && sxe >= xs)
-
-                    let miny = xsteps |> Array.map (fun (_,_,_,a,_,_,_) -> a) |> Array.min
-                    let maxy = xsteps |> Array.map (fun (_,_,_,_,a,_,_) -> a) |> Array.max
+                    
+                    let yps = xsteps |> Array.collect (fun (_,_,_,a,b,_,_) -> [|a;b|]) |> getAll
             
                     for (ys,ye,yc) in yps do
 
-                        if ys <= maxy && ye >= miny then
-
-                            let ysteps = xsteps |> Array.where (fun (_,_,_,sys,sye,_,_) -> sys <= ye && sye >= ys)
+                        let ysteps = xsteps |> Array.where (fun (_,_,_,sys,sye,_,_) -> sys <= ye && sye >= ys)
                             
-                            if ysteps.Length > 0 then
-                            
-                                let minz = ysteps |> Array.map (fun (_,_,_,_,_,a,_) -> a) |> Array.min
-                                let maxz = ysteps |> Array.map (fun (_,_,_,_,_,_,a) -> a) |> Array.max
-                
-                                for(zs,ze,zc) in zps do
+                        if ysteps.Length > 0 then
+                                                        
+                            let zps = ysteps |> Array.collect (fun (_,_,_,_,_,a,b) -> [|a;b|]) |> getAll
+                                            
+                            for(zs,ze,zc) in zps do
 
-                                    if zs <= maxz && ze >= minz then
-
-                                        match (ysteps |> Array.tryFind (fun (_,a,b,c,d,e,f) -> xs >= a && xe <= b && ys >= c && ye <= d && zs >= e && ze <= f)) with
-                                        | Some (a,_,_,_,_,_,_) -> if a then xc*yc*zc
-                                        | _ -> 0 |> ignore
+                                match (ysteps |> Array.tryFind (fun (_,a,b,c,d,e,f) -> xs >= a && xe <= b && ys >= c && ye <= d && zs >= e && ze <= f)) with
+                                | Some (a,_,_,_,_,_,_) -> if a then xc*yc*zc
+                                | _ -> 0 |> ignore
     
             |]
 
